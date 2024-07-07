@@ -108,7 +108,7 @@ coords_WC = np.round(coords_WC, 2)
 # add WC to database
 fingerprint_df[['x_WC', 'y_WC']] = coords_WC
 
-fingerprint_df.to_csv("fingerprint_db.csv", index= False)
+fingerprint_df.to_csv("dataset/fingerprint_db.csv", index= False)
 # print(fingerprint_df)
 plt.show()
 

@@ -70,6 +70,6 @@ dataset/
 ├──fingerprint_db.csv   #The fingerprint data collected
 ├──training_data.csv    #RSSI data is used to build the fingerprint.
 ├──pathloss.csv         #The RSSI data is used to build the signal propagation model.
-├──testing_data.csv     #The data consists of test points.
+└──testing_data.csv     #The data consists of test points.
 
 ```

@@ -5,10 +5,3 @@ services:
       - "3306:3306"
     environment: 
       - MYSQL_ROOT_PASSWORD=123
-  # mqtt:
-  #   image: "eclipse-mosquitto"
-  #   ports:
-  #     - "1883:1883"
-  #     - "9001:9001"
-  #   volumes: 
-  #     - ./mosquitto.conf:/mosquitto/config/mosquitto.conf

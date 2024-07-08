@@ -16,7 +16,7 @@ alpha = 0.7
 
 stored_file = open("position_history.txt", 'a')
 
-fingerprint_db = pd.read_csv('fingerprint_db.csv')
+fingerprint_db = pd.read_csv('dataset/fingerprint_db.csv')
 dataframe = pd.DataFrame({'id':[], 'Anchor':[], 'RSSI':[]})
 
 anchor = np.array([ [0,     5.84],

@@ -82,7 +82,8 @@ async def data_process():
             dataframe.drop(dataframe.index , inplace=True)
             data_copy = data_copy.groupby(by = ['id',"Anchor"], as_index=False)["RSSI"].ewm(alpha= alpha, adjust= False).mean().reset_index()
             data_copy = data_copy.groupby(['id',"Anchor"]).tail(1).reset_index()
-            print(data_copy.head())
+            # print(data_copy.head())
+            
             # tach du lieu id va rssi
             id_arr = data_copy[['id']].to_numpy(dtype= object)
             id_arr = np.unique(id_arr)                          #array luu id cua du lieu truc truyen

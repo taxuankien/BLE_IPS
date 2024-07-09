@@ -31,7 +31,7 @@ engine  = sqlalchemy.create_engine(connection)
 # query = "select * from rawrssi where timestamp > '2024-05-15 17:00:00' and y < 1.7 and y > 1.6"
 
 
-df = pd.read_csv("testing_data(raw).csv")
+df = pd.read_csv("../dataset/testing_data.csv")
 # df = pd.read_sql(query, engine)
 
 count_data = df.groupby('Anchor').size()

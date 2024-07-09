@@ -22,7 +22,7 @@ ref_rssi = -57.835
 
 connection_string = "mysql+mysqlconnector://root:123@127.0.0.1:3306/db"
 engine = sqlalchemy.create_engine(connection_string)
-query = "select * from rawrssi where timestamp >= '2024-05-17 10:00:00' and timestamp < '2024-06-16 10:00:00' and x < 10 and y <10 and id = '00000000000000000000000000000001'"
+query = "select * from rawrssi where timestamp >= '2024-05-17 10:00:00' and timestamp < '2024-06-30 10:00:00' and x < 10 and y <10 and id = '00000000000000000000000000000001'"
 
 
 df = pd.read_sql(query, engine)
@@ -36,23 +36,22 @@ training_df = training_df.groupby(['x','y', 'Anchor', 'date']).sample(100, repla
 
 temp = training_df[['x', 'y', 'Anchor','RSSI']]
 temp = temp.groupby(['x','y','Anchor'])['RSSI'].mean().reset_index()
-# test = test_df.groupby(['x', 'y', 'Anchor'])['RSSI'].ewm(alpha=0.5).mean().reset_index()
+
 
 offline_np = temp.to_numpy()
 coordinates = np.unique(offline_np[:, 0:2], axis = 0)
-# testing_coords = np.unique(testing_np[:, 0:2], axis = 0)
+
 
 rssi_db = np.array(offline_np[:, 2:])
 print(offline_np[:, 0].size)
 length = int(offline_np[:, 0].size/num_anchor)
 fingerprint = np.zeros((length, 12))
-# test_db = np.zeros((int(testing_np[:,0]/num_anchor), 12))
+
 for i in range(length):
     fingerprint[i, 0:2] = offline_np[4*i, :2]
-    # test_db[i, 0:2] = testing_np[4*i, :2]
     for y in range(num_anchor):
         fingerprint[i:, 4+2*y:6+2*y] = offline_np[4*i+y,2:]
-        # test_db[i:, 4+2*y:6+2*y] = testing_np[4*i+y,2:]
+       
 
 
 fingerprint_df = pd.DataFrame(fingerprint, columns= ['x', 'y', 'x_WC', 'y_WC', 'Anchor0', 'RSSI0', 'Anchor1', 'RSSI1', 'Anchor2', 'RSSI2', 'Anchor3', 'RSSI3'])
@@ -65,7 +64,6 @@ fingerprint_df.columns.name = 'RP'
 rssi_y = fingerprint_df[['RSSI0', 'RSSI1', 'RSSI2', 'RSSI3']]
 
 af = AffinityPropagation(damping= damping_factor, max_iter= 100, verbose= True).fit(rssi_y)
-# km = KMeans(n_clusters=5, random_state=0, n_init= 'auto').fit(rssi_y)
 
 label = af.labels_
 exampler_indices = af.cluster_centers_indices_
@@ -86,7 +84,7 @@ sns.scatterplot(x = coords[:, 0], y = coords[:, 1], hue = label, palette=sns.col
 # print(coordinates)
 
 # Weight Centroid 
-file = open("pathloss_model.pkl", 'rb')
+file = open("../pathloss_model.pkl", 'rb')
 pathloss_model = pickle.load(file)
 print("coef of model: ", str(1/pathloss_model.coef_/10))
 rssi_n_anchor = fingerprint_df[['RSSI0', 'RSSI1', 'RSSI2', 'RSSI3']].to_numpy()
